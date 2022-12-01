@@ -1,0 +1,62 @@
+{{ define "main" }}
+
+<section class="section-padding">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-3">
+        <div class="sticky-top programs-list">
+          <h3 class="h4 mb-4">List of Our Program</h3>
+          <ul class="list-unstyled filter-list">
+            {{ $categories := slice }}
+            {{ range .Data.Pages }}
+            {{ range .Params.programs }}
+            {{ $categories = $categories | append . }}
+            {{ end }}
+            {{ end }}
+            {{ range ( $categories | uniq ) }}
+            <li class="tab-switcher" data-tab="{{.|anchorize|lower}}" data-filter=".{{.|anchorize|lower}}">{{.|humanize}}
+            </li>
+            {{ end }}
+          </ul>
+        </div>
+      </div>
+      <div class="col-lg-9">
+        {{ range $i, $e:= .Params.program_details }}
+        <div class="tab-content mb-5 {{if ne $i 0}}hide{{end}}" id="{{.id|anchorize|lower}}">
+          <div class="content row">
+            <div class="col-lg-8">
+              <h2 class="mb-4">{{.title | markdownify}}</h2>
+              <p>{{.content | markdownify}}</p>
+            </div>
+            <div class="col-lg-4">
+              <img src="{{.image | absURL}}" class="img-fluid">
+            </div>
+          </div>
+        </div>
+        {{ end }}
+
+        <div class="row filter-wrapper">
+          {{ range .Data.Pages.ByWeight }}
+          <div class="col-md-4 mb-4 filter-item {{range .Params.programs}}{{.|anchorize}} {{end}}">
+            <div class="card text-center mentor-card">
+              <a href="{{.Permalink}}" class="d-inine-block"><img class="card-img mx-auto" src="{{.Params.image | absURL }}" alt="{{.Title}}"></a>
+              <div class="card-body">
+                <h3 class="font-weight-600 mb-2"><a class="post-title" href="{{.Permalink}}">{{.Title}}</a></h3>
+                <p style="height: 55px;" class="mb-2">{{.Params.designation}}</p>
+                <strong>Served {{.Params.served_clients}} Clients</strong>
+                <div class="row justify-content-between px-2 mx-2 mt-2">
+                  <span class="slot-head">Slots</span>
+                  <span class="slot-detail"><span style="width: {{.Params.available_slots_width}};"></span></span>
+                  <span class="slot-available">{{.Params.available_slots}}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          {{ end }}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{{ end }}

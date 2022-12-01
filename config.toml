@@ -1,0 +1,122 @@
+baseURL = ""
+disqusShortname = "sajed-template"
+googleAnalytics = ""
+paginate = "6"
+summaryLength = "10"
+theme = "lose2gain"
+title = "Travel Differently with Bengali Backpacker"
+[markup.goldmark.renderer]
+unsafe = true
+[[menu.about]]
+name = "About"
+url = "about"
+weight = 1
+[[menu.about]]
+name = "Contact"
+url = "contact"
+weight = 4
+[[menu.about]]
+name = "Terms & Conditions"
+url = "terms-conditions"
+weight = 2
+[[menu.about]]
+name = "FAQ"
+url = "faq"
+weight = 3
+[[menu.connect]]
+name = "info@losetogainbd.com"
+url = "mailto:info@losetogainbd.com"
+weight = 1
+[[menu.connect]]
+name = "+8801786929256"
+url = "tel:+8801786929256"
+weight = 2
+[[menu.main]]
+name = "Blog"
+url = "blog"
+weight = 5
+[[menu.main]]
+name = "Client Reviews"
+url = "story"
+weight = 4
+[[menu.main]]
+name = "Mentors"
+url = "mentor"
+weight = 2
+[[menu.main]]
+name = "Our Story"
+url = "about"
+weight = 3
+[[menu.main]]
+name = "Home"
+url = "/"
+weight = 1
+[outputs]
+home = ["HTML", "RSS"]
+[params]
+author = "Sajedur Rahman"
+contact_form_action = "#"
+copyright = "Copyright © 2022 LoseToGain"
+custom_script = ""
+description = "This is meta description"
+favicon = "images/favicon.png"
+footer_content = "Lose To Gain is the Bangladesh's largest online fitness and nutrition community. We transformed thousands of people since 2017 through our Facebook community and Personal Coaching Services."
+logo = "images/logo.png"
+logo_width = "135px"
+store = false
+[params.cookies]
+enable = false
+expire_days = 2
+[params.navigation_button]
+enable = false
+label = "get a quote"
+link = "contact"
+[[params.plugins.css]]
+attributes = "media='screen'"
+link = "plugins/bootstrap/bootstrap.min.css"
+[[params.plugins.css]]
+attributes = "media='screen'"
+link = "plugins/slick/slick.css"
+[[params.plugins.css]]
+attributes = "media='screen'"
+link = "plugins/slick/slick-theme.css"
+[[params.plugins.css]]
+attributes = ""
+link = "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css"
+[[params.plugins.css]]
+attributes = "media='screen'"
+link = "plugins/swiper/swiper.css"
+[[params.plugins.js]]
+attributes = ""
+link = "plugins/jQuery/jquery.min.js"
+[[params.plugins.js]]
+attributes = ""
+link = "plugins/bootstrap/bootstrap.min.js"
+[[params.plugins.js]]
+attributes = ""
+link = "plugins/slick/slick.min.js"
+[[params.plugins.js]]
+attributes = ""
+link = "plugins/swiper/swiper.min.js"
+[[params.plugins.js]]
+attributes = ""
+link = "https://unpkg.com/isotope-layout@3/dist/isotope.pkgd.min.js"
+[params.preloader]
+enable = false
+preloader = ""
+[[params.social]]
+icon = "fab fa-facebook"
+link = "https://www.facebook.com/losetogainbd"
+title = "facebook"
+[[params.social]]
+icon = "fab fa-youtube"
+link = "https://www.youtube.com/channel/UCh2S5IWUxLtkzLiuNIEjGbA"
+title = "youtube"
+[[params.social]]
+icon = "fab fa-instagram"
+link = "http://instagram.com/losetogainbd"
+title = "instagram"
+[[params.social]]
+icon = "fas fa-users"
+link = "https://www.facebook.com/groups/losetogainbd"
+title = "fb Group"

@@ -1,0 +1,217 @@
+{{ define "main" }}
+
+<!-- start of banner -->
+<section class="banner bg-light pt-5 pb-120 has-wave" style="background-image:url('{{`images/wave.svg` | absURL }}')">
+  <div class="container">
+    <div class="row justify-content-around align-items-center">
+      <div class="col-xl-5 col-lg-6 col-md-8 order-1 order-lg-0 text-center text-lg-left">
+        <h2 class="section-title">Hello, I’m <br>{{.Title}}</h2>
+        <p class="mb-2 text-primary font-weight-500">{{.Params.designation}}</p>
+        <p class="mb-4">{{.Params.description | markdownify }}</p>
+        <ul class="social-icon-link list-unstyled list-inline">
+          {{ with .Params.Social.facebook }}
+          <li class="list-inline-item"><a href="{{. | safeURL}}"><i class="fab fa-facebook"></i></a></li>
+          {{ end }}
+          {{ with .Params.Social.twitter }}
+          <li class="list-inline-item"><a href="{{. | safeURL}}"><i class="fab fa-twitter"></i></a></li>
+          {{ end }}
+          {{ with .Params.Social.linkedin }}
+          <li class="list-inline-item"><a href="{{. | safeURL}}"><i class="fab fa-linkedin"></i></a></li>
+          {{ end }}
+          <button class="list-inline-item btn btn-outline-primary" data-toggle="modal"
+            data-target="#{{.Title|anchorize}}"><i class="fas fa-plus mr-2"></i>More about me</button>
+        </ul>
+      </div>
+      <div class="col-xl-4 col-lg-5 mb-5 mb-lg-0 order-0 order-lg-1 text-center">
+        <img class="img-fluid mentor-image" src="{{.Params.image | absURL }}" alt="{{.Title}}">
+      </div>
+    </div>
+  </div>
+</section>
+<!-- end of banner -->
+
+<!-- Modal -->
+<div class="modal fade" id="{{.Title|anchorize}}" tabindex="-1" aria-labelledby="{{.Title|anchorize}}Label"
+  aria-hidden="true">
+  <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title" id="{{.Title|anchorize}}Label">More About {{.Title}}</h3>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body content">
+        {{.Content}}
+        {{ with .Params.certificates}}
+        <h2><strong>My Certificates</strong></h2>
+        {{ range .}}
+        <a class="d-inline-block mr-3" target="_blank" href="{{. | relURL}}"><img
+            src="https://e7.pngegg.com/pngimages/54/903/png-clipart-certificate-of-achievement-academic-certificate-template-certificate-template-text-certificate-thumbnail.png"
+            width="100px" alt="certificates"></a>
+        {{ end }}
+        {{ end }}
+      </div>
+    </div>
+  </div>
+</div>
+
+<section class="about-mentor section-padding has-wave" style="background-image:url('{{`images/wave-gray.svg` | absURL}}')">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-xl-10">
+        <div class="d-flex flex-wrap align-items-center justify-content-between">
+          <div class="block shadow-lg p-4 rounded">
+            <h2 class="text-primary font-secondary">{{.Params.available_slots}}</h2>
+            <p class="h5 font-weight-600 text-secondary">Available Slots</p>
+          </div>
+          <div class="block shadow-lg p-4 rounded">
+            <h2 class="text-primary font-secondary">{{.Params.experience}}</h2>
+            <p class="h5 font-weight-600 text-secondary">Years Experience</p>
+          </div>
+          <div class="block shadow-lg p-4 rounded">
+            <h2 class="text-primary font-secondary">{{.Params.served_clients}}</h2>
+            <p class="h5 font-weight-600 text-secondary">Served Clients</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{{ with site.GetPage "mentor" }}
+{{ .Content | markdownify }}
+{{ end }}
+
+<!-- pricing table -->
+<section class="pricing section-padding bg-light pt-80 pb-130 has-wave"
+style="background-image:url('{{`images/wave.svg` | absURL }}')">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <table class="pricing-table shadow mx-auto">
+
+          <!-- table head -->
+          <thead class="pricing-table-head">
+            <tr>
+              {{ range .Params.pricing_table_info }}
+              <th>
+                <h3 class="text-white font-weight-bold">{{.name | markdownify}}</h3>
+              </th>
+              {{ end }}
+            </tr>
+          </thead>
+          <tbody>
+
+            <!-- table price -->
+            <tr>
+              {{ range .Params.pricing_table_info }}
+              <td data-label="{{.name | markdownify}}" {{if .recomended}}class="active"{{end}}>
+                {{if .recomended}}<span class="recomended d-none d-lg-block">Recomended</span>{{end}}
+                {{with .price}}<span class="h4 font-weight-bold d-inline-flex">{{.}}</span>{{ end }}
+                <div>
+                  {{ with .icon }}<i class="{{.}} mr-2 "></i>{{end}}
+                  <span>{{.content | markdownify}}</span>
+                </div>
+              </td>
+              {{ end }}
+            </tr>
+
+            <!-- table body/info -->
+            {{ range .Params.pricing_table_data }}
+            <tr>
+              {{ range .table_row }}
+              <td data-label="{{.name | markdownify}}">
+                <div class="d-flex align-items-center">
+                  {{ with .icon }}<i class="{{.}} mr-2 "></i>{{end}}
+                  <span>{{.content | markdownify}}</span>
+                </div>
+              </td>
+              {{ end }}
+            </tr>
+            {{ end }}
+
+            <!-- table footer -->
+            <tr>
+              {{ range .Params.pricing_table_info }}
+              <td data-label="{{.name | markdownify}}" class="font-weight-bold">
+                {{ if or .button_label .button_link }}
+                <a href="{{ .button_link | relLangURL }}"
+                  class="btn btn{{if not .recomended}}-outline{{end}}-primary d-block">{{.button_label}}</a>
+                {{ end }}
+              </td>
+              {{ end }}
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- start of image-compare-section -->
+<section class="section-padding">
+  <div class="container">
+    <h2 class="section-title text-center mb-5">People Who Transformed By Me</h2>
+    <div class="row">
+      {{ range where site.RegularPages "Params.mentor" .Title }}
+      <div class="col-lg-6 mb-4">
+        <div class="card rounded-lg shadow-lg h-100">
+          {{ if .Params.image_after }}
+          <div class="twentytwenty-image">
+            <img class="w-100" src="{{ .Params.image | absURL }}" alt="before">
+            <img class="w-100" src="{{ .Params.image_after | absURL }}" alt="after">
+          </div>
+          {{ else }}
+          <img class="w-100" src="{{ .Params.image | absURL }}" alt="before">
+          {{ end }}
+          <div class="card-body pb-2">
+            <h3><a href="{{.Permalink}}" class="font-secondary text-secondary">{{ .Title }}</a></h3>
+            <ul class="mt-4 list-inline">
+              <li class="list-inline-item mb-3 mr-4">
+                <span class="text-primary mr-2"> <i class="far fa-user"></i> </span>
+                Mentor's name :
+                <a class="text-primary ml-2"
+                  href="{{ `mentor/` | relURL }}{{ .Params.mentor | urlize | lower }}">{{ .Params.mentor | humanize }}</a>
+              </li>
+              <div class="list-inline-item mb-3 mr-4">
+                <span class="text-primary mr-2"> <i class="fas fa-history"></i> </span>
+                Previous Weight :
+                <span class="text-primary ml-2">{{ .Params.previous_weight }} KG</span>
+              </div>
+              <div class="list-inline-item mb-3 mr-4">
+                <span class="text-primary mr-2"> <i class="fas fa-pizza-slice"></i> </span>
+                Diet :
+                <span class="text-primary ml-2">{{.Params.diet}}</span>
+              </div>
+              <div class="list-inline-item mb-3 mr-4">
+                <span class="text-primary mr-2"> <i class="fas fa-diagnoses"></i> </span>
+                {{if lt .Params.previous_weight .Params.current_weight}}
+                Weight Gained :
+                <span class="text-primary ml-2">{{sub .Params.current_weight .Params.previous_weight}} KG</span>
+                {{ else }}
+                Weight Losed :
+                <span class="text-primary ml-2">{{sub .Params.previous_weight .Params.current_weight}} KG</span>
+                {{ end }}
+              </div>
+              <div class="list-inline-item mb-3 mr-4">
+                <span class="text-primary mr-2"> <i class="far fa-calendar-check"></i> </span>
+                Time :
+                <span class="text-primary ml-2">{{ .Params.time }}</span>
+              </div>
+            </ul>
+          </div>
+          <div class="px-4">
+            <div class="card-footer bg-transparent px-0 py-4">
+              <a href="{{.Permalink}}" class="btn btn-outline-primary">Read Full Story</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      {{ end }}
+    </div>
+  </div>
+</section>
+<!-- end of image-compare-section -->
+
+{{ end }}

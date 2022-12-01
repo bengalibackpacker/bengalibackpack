@@ -1,0 +1,148 @@
+{{ define "main" }}
+
+<!-- start of page-header -->
+<section class="page-header bg-light pt-70 pb-130 has-wave"
+  style="background-image:url('{{`images/wave.svg`| absURL}}')">
+  <div class="container">
+    <div class="row text-center">
+      <div class="col-12">
+        <h2 class="section-title">{{.Title}}</h2>
+        <h3 class="h4">{{.Params.subtitle | markdownify }}</h3>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- end of page-header -->
+
+<section class="pt-80 section-padding">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <div class="filters">
+          <div class="ui-group mb-4 mb-lg-0">
+            <Strong class="group-title">Mentor: </Strong>
+            <div class="button-group js-radio-button-group" data-filter-group="mentor">
+              <button class="button is-checked" data-filter="">All</button>
+              {{ $mentors := slice }}
+              {{ range .Data.Pages }}
+              {{ with .Params.mentor }}
+              {{ $mentors = $mentors | append . }}
+              {{ end }}
+              {{ end }}
+              {{ range ( $mentors | uniq ) }}
+              <button class="button" data-filter=".{{ . | anchorize | lower }}">{{ . }}</button>
+              {{ end }}
+            </div>
+          </div>
+
+          <div class="sort">
+            <strong class="sort-description">Program: </strong>
+            <p class="sort-button">View All</p>
+            <ul class="sort-menu sort-select">
+              <li class="button" data-filter="" onclick="toggleMenu('View All')">View All</li>
+              {{ $time := slice }}
+              {{ range .Data.Pages }}
+              {{ with .Params.time }}
+              {{ $time = $time | append . }}
+              {{ end }}
+              {{ end }}
+              {{ range sort ( $time | uniq )  }}
+              <li class="button" data-filter=".{{ . | anchorize | lower }}" onclick="toggleMenu('{{ . }}')">{{ . }}</li>
+              {{ end }}
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <script>
+      var dButton = document.querySelector('.sort-button');
+      var dMenu = document.querySelector(".sort-menu");
+      var dItem = document.querySelector(".sort-menu > li");
+
+      function toggleMenu(name) {
+        document.querySelector('.sort-button').innerHTML = name;
+        console.log(this);
+      }
+
+      dButton.addEventListener("click", function () {
+        var docClick = function (ev) {
+          if (!(ev.target).classList.contains('sort-button')) {
+            closeDropdown();
+          }
+        }
+        var closeDropdown = function () {
+          dMenu.classList.remove("show-menu");
+          document.removeEventListener('click', docClick);
+        }
+        if (dMenu.classList.contains("show-menu")) {
+          closeDropdown();
+        } else {
+          document.addEventListener('click', docClick)
+          dMenu.classList.add("show-menu");
+        }
+        dItem.addEventListener("click", function () {
+          closeDropdown();
+        });
+
+      });
+    </script>
+
+
+    <div class="row story-filter-wrapper">
+      {{ range .Data.Pages }}
+      <div class="col-lg-6 mb-4 story-item {{.Params.mentor | lower | anchorize}} {{.Params.time | lower | anchorize}}">
+        <div class="card rounded-lg shadow-lg h-100">
+          {{ with .Params.image }}
+          <img class="w-100" src="{{ . | absURL }}" alt="transformation image">
+          {{ end }}
+          <div class="card-body pb-2">
+            <h3><a href="{{.Permalink}}" class="font-secondary text-secondary">{{ .Title }}</a></h3>
+            <ul class="mt-4 list-inline">
+              <li class="list-inline-item mb-3 mr-4">
+                <span class="text-primary mr-2"> <i class="far fa-user"></i> </span>
+                Mentor's name :
+                <a class="text-primary ml-2"
+                  href="{{ `mentor/` | relURL }}{{ .Params.mentor | anchorize | lower }}">{{ .Params.mentor | humanize }}</a>
+              </li>
+              <div class="list-inline-item mb-3 mr-4">
+                <span class="text-primary mr-2"> <i class="fas fa-history"></i> </span>
+                Previous Weight :
+                <span class="text-primary ml-2">{{ .Params.previous_weight }} KG</span>
+              </div>
+              <div class="list-inline-item mb-3 mr-4">
+                <span class="text-primary mr-2"> <i class="fas fa-pizza-slice"></i> </span>
+                Diet :
+                <span class="text-primary ml-2">{{.Params.diet}}</span>
+              </div>
+              <div class="list-inline-item mb-3 mr-4">
+                <span class="text-primary mr-2"> <i class="fas fa-diagnoses"></i> </span>
+                {{if lt .Params.previous_weight .Params.current_weight}}
+                Weight Gained :
+                <span class="text-primary ml-2">{{sub .Params.current_weight .Params.previous_weight}} KG</span>
+                {{ else }}
+                Weight Losed :
+                <span class="text-primary ml-2">{{sub .Params.previous_weight .Params.current_weight}} KG</span>
+                {{ end }}
+              </div>
+              <div class="list-inline-item mb-3 mr-4">
+                <span class="text-primary mr-2"> <i class="far fa-calendar-check"></i> </span>
+                Time :
+                <span class="text-primary ml-2">{{ .Params.time }}</span>
+              </div>
+            </ul>
+          </div>
+          <div class="px-4">
+            <div class="card-footer bg-transparent px-0 py-4">
+              <a href="{{.Permalink}}" class="btn btn-outline-primary">Read Full Story</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      {{ end }}
+    </div>
+  </div>
+</section>
+
+{{ end }}
